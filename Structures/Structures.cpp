@@ -9,23 +9,27 @@ struct Student
 	float MidPoints = 0;
 };
 
-void InputFIO(Student group[], int size)
+void InputFIO(struct Student group[], int size)
 {
-	cout << "FIO: ";
-	cin.get(group[0].FIO, 35);
-	cout << "Math: ";
-	cin >> group[0].Points[0];
-	cout << "Russian language: ";
-	cin >> group[0].Points[1];
-	cout << "Comp. Science: ";
-	cin >> group[0].Points[2];
-	cout << "Programming: ";
-	cin >> group[0].Points[3];
-	cout << "Linux course: ";
-	cin >> group[0].Points[4];
+	for (int i = 0; i < size; i++)
+	{
+		cout << "FIO: ";
+		cin >> group[i].FIO;
+		cout << "Math: ";
+		cin >> group[i].Points[0];
+		cout << "Russian language: ";
+		cin >> group[i].Points[1];
+		cout << "Comp. Science: ";
+		cin >> group[i].Points[2];
+		cout << "Programming: ";
+		cin >> group[i].Points[3];
+		cout << "Linux course: ";
+		cin >> group[i].Points[4];
+	}
+
 }
 
-void PrintFIO(Student group[], int index)
+void PrintFIO(struct Student group[], int index)
 {
 	cout << index << " Student ";
 	cout << "FIO: " << group[index].FIO << endl;
@@ -37,15 +41,15 @@ void PrintFIO(Student group[], int index)
 	cout << "Avarege point = " << group[index].MidPoints << endl;
 }
 
-void  AveragePoint(Student group[], int size)
+void AveragePoint(Student group)
 {
 	float result;
 	result = 0;
 	for (int j = 0; j < 5; j++)
 	{
-		result += group[0].Points[j];
+		result += group.Points[j];
 	}
-	group[0].MidPoints = result / 5;
+	group.MidPoints = result / 5.0;
 }
 
 void FIOSearch(Student group[], int size)
@@ -88,7 +92,11 @@ void SortByAveragePoint(Student group[], int size) {
 		for (int j = i + 1; j < size; j++)
 		{
 			if (group[i].MidPoints < group[j].MidPoints)
-				tmp = group[i]; group[i] = group[j]; group[j] = tmp;
+			{
+				tmp = group[i];
+				group[i] = group[j];
+				group[j] = tmp;
+			}
 		}
 	}
 }
@@ -108,11 +116,16 @@ void SortByFIO(Student group[], int size) {
 
 int main()
 {
-	Student* group = new Student[25];
-	InputFIO(group, 0);
-	AveragePoint(group,1);
-	PrintFIO(group, 0);
-	FIOSearch(group, 1);
+	Student* group = new Student[3];
+	InputFIO(group, 3);
+	//AveragePoint(group[0]);
+	//FIOSearch(group, 5);
+	SortByAveragePoint(group, 3);
+	cout << endl << endl;
+	for (int i = 0; i < 3; i++)
+	{
+		PrintFIO(group, i);
+	}
 }
 
 

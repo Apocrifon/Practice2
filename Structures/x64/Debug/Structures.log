@@ -1,2 +1,3 @@
 ﻿  Structures.cpp
+D:\Repositories\Structures\Structures\Structures.cpp(52,27): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Structures.vcxproj -> D:\Repositories\Structures\x64\Debug\Structures.exe
