@@ -1,5 +1,6 @@
 #include <iostream>
-
+#include <fstream>
+#include <string>
 using namespace std;
 
 struct Student
@@ -8,6 +9,29 @@ struct Student
 	int Points[5];
 	float MidPoints = 0;
 };
+
+void PrintFIO(struct Student group[], int index)
+{
+	cout << index << " Student ";
+	cout << "FIO: " << group[index].FIO << endl;
+	cout << "Math = " << group[index].Points[0] << endl;
+	cout << "Russian language = " << group[index].Points[1] << endl;
+	cout << "Comp. Science = " << group[index].Points[2] << endl;
+	cout << "Programming = " << group[index].Points[3] << endl;
+	cout << "Linux course = " << group[index].Points[4] << endl;
+	cout << "Avarege point = " << group[index].MidPoints << endl;
+	cout << endl;
+}
+
+void AveragePoint(Student group[], int index)
+{
+	float result=0;
+	for (int j = 0; j < 5; j++)
+	{
+		result += group[index].Points[j];
+	}
+	group[index].MidPoints = result / 5.f;
+}
 
 void InputFIO(struct Student group[], int size)
 {
@@ -26,30 +50,7 @@ void InputFIO(struct Student group[], int size)
 		cout << "Linux course: ";
 		cin >> group[i].Points[4];
 	}
-
-}
-
-void PrintFIO(struct Student group[], int index)
-{
-	cout << index << " Student ";
-	cout << "FIO: " << group[index].FIO << endl;
-	cout << "Math = " << group[index].Points[0] << endl;
-	cout << "Russian language = " << group[index].Points[1] << endl;
-	cout << "Comp. Science = " << group[index].Points[2] << endl;
-	cout << "Programming = " << group[index].Points[3] << endl;
-	cout << "Linux course = " << group[index].Points[4] << endl;
-	cout << "Avarege point = " << group[index].MidPoints << endl;
-}
-
-void AveragePoint(Student group)
-{
-	float result;
-	result = 0;
-	for (int j = 0; j < 5; j++)
-	{
-		result += group.Points[j];
-	}
-	group.MidPoints = result / 5.0;
+	AveragePoint(group, 0);
 }
 
 void FIOSearch(Student group[], int size)
@@ -70,6 +71,8 @@ void FIOSearch(Student group[], int size)
 void MaxPointSearch(Student group[], int size)
 {
 	int subjName;
+	cout << "Enter subject index:" << endl;
+	cout << "0 = Math \n 1 = Russian Language\n 2 = Comp. Science\n 3 = Programming\n 4 = Linux course\n ";
 	cin >> subjName;
 	int maxPoint = group[0].Points[subjName];
 	int index = 0;
@@ -79,19 +82,19 @@ void MaxPointSearch(Student group[], int size)
 		{
 			index = i;
 			maxPoint = group[i].Points[subjName];
-			return;
 		}
-		PrintFIO(group, i);
 	}
+	PrintFIO(group, index);
 }
 
-void SortByAveragePoint(Student group[], int size) {
+void SortByAveragePoint(Student group[], int size) 
+{
 	Student tmp;
 	for (int i = 0; i < size - 1; i++)
 	{
-		for (int j = i + 1; j < size; j++)
+		for (int j = 0; j < size-1; j++)
 		{
-			if (group[i].MidPoints < group[j].MidPoints)
+			if (group[j].MidPoints > group[j+1].MidPoints)
 			{
 				tmp = group[i];
 				group[i] = group[j];
@@ -101,31 +104,60 @@ void SortByAveragePoint(Student group[], int size) {
 	}
 }
 
-void SortByFIO(Student group[], int size) {
+void SortByFIO(Student group[], int size) 
+{
 	Student temp;
-	for (int i = 0; i < size - 1; i++)
+	for (int i = 0; i < size; i++)
 	{
-		for (int j = i + 1; j < size; j++)
+		for (int j = 0; j < size; j++)
 		{
-			if (group[i].FIO < group[j].FIO)
-				temp = group[i]; group[i] = group[j]; group[j] = temp;
+			string stud1 = group[j].FIO;
+			string stud2 = group[j + 1].FIO;
+			if (stud1.compare(stud2) == 1)
+			{
+				temp = group[i];
+				group[i] = group[j];
+				group[j] = temp;
+			}
 		}
 	}
 }
 
+void FileWrite(Student group[], int size)
+{
+	ofstream fileStrmOut("D:\\Repositories\\Structures\\1.txt", ios::binary);
+	fileStrmOut.write((char*)&group, sizeof(group));
+	fileStrmOut.close();
+}
+
+void FileRead(Student group[], int size)
+{
+	ifstream in("D:\\Repositories\\Structures\\1.txt", ios::binary);
+	in.read((char*)&group, sizeof(group));
+	in.close();
+}
 
 int main()
 {
-	Student* group = new Student[3];
-	InputFIO(group, 3);
-	//AveragePoint(group[0]);
-	//FIOSearch(group, 5);
-	SortByAveragePoint(group, 3);
-	cout << endl << endl;
-	for (int i = 0; i < 3; i++)
+	Student* group = new Student[25];
+	//InputFIO(group, 1);
+	//AveragePoint(group, 0);
+	////FIOSearch(group, 5);
+	////SortByAveragePoint(group, 3);
+	//SortByFIO(group, 1);
+	//cout << endl << endl;
+	//for (int i = 0; i < 1; i++)
+	//{
+	//	PrintFIO(group, i);
+	//}
+	//FileWrite(group, 1);
+	FileRead(group, 1);
+	/*MaxPointSearch(group[0], 3);*/
+	for (int i = 0; i < 1; i++)
 	{
-		PrintFIO(group, i);
+		PrintFIO(group,i);
 	}
+
 }
 
 
