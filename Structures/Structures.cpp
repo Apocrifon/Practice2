@@ -1,7 +1,4 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-using namespace std;
+#include "Funk.h"
 
 struct Student
 {
@@ -10,136 +7,109 @@ struct Student
 	float MidPoints = 0;
 };
 
-void PrintFIO(struct Student group[], int index)
+struct MARSH
 {
-	cout << index << " Student ";
-	cout << "FIO: " << group[index].FIO << endl;
-	cout << "Math = " << group[index].Points[0] << endl;
-	cout << "Russian language = " << group[index].Points[1] << endl;
-	cout << "Comp. Science = " << group[index].Points[2] << endl;
-	cout << "Programming = " << group[index].Points[3] << endl;
-	cout << "Linux course = " << group[index].Points[4] << endl;
-	cout << "Avarege point = " << group[index].MidPoints << endl;
+	char BEGST[30];
+	char TERM[30];
+	int  NUMER;
+};
+
+void InputWays(MARSH traffic[], int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		cout << i + 1 << " march" << endl;
+		cout << "first point: ";
+		cin >> traffic[i].BEGST ;
+		cout << "second point: ";
+		cin >> traffic[i].TERM;
+		cout << "number: ";
+		cin >> traffic[i].NUMER;
+	}
 	cout << endl;
 }
 
-void AveragePoint(Student group[], int index)
+void PrintWay(MARSH traffic)
 {
-	float result=0;
-	for (int j = 0; j < 5; j++)
-	{
-		result += group[index].Points[j];
-	}
-	group[index].MidPoints = result / 5.f;
+	cout << traffic.BEGST << endl;
+	cout << traffic.TERM << endl;
+	cout << traffic.NUMER << endl;
+	cout << endl;
 }
 
-void InputFIO(struct Student group[], int size)
+void SortByNumber(MARSH traffic[], int size)
 {
-	for (int i = 0; i < size; i++)
-	{
-		cout << "FIO: ";
-		cin >> group[i].FIO;
-		cout << "Math: ";
-		cin >> group[i].Points[0];
-		cout << "Russian language: ";
-		cin >> group[i].Points[1];
-		cout << "Comp. Science: ";
-		cin >> group[i].Points[2];
-		cout << "Programming: ";
-		cin >> group[i].Points[3];
-		cout << "Linux course: ";
-		cin >> group[i].Points[4];
-	}
-	AveragePoint(group, 0);
-}
-
-void FIOSearch(Student group[], int size)
-{
-	string FIO;
-	cout << "Enter FIO: ";
-	cin >> FIO;
-	for (int i = 0; i < size; i++)
-	{
-		if (group[i].FIO == FIO)
-		{
-			PrintFIO(group, i);
-			return;
-		}
-	}
-}
-
-void MaxPointSearch(Student group[], int size)
-{
-	int subjName;
-	cout << "Enter subject index:" << endl;
-	cout << "0 = Math \n 1 = Russian Language\n 2 = Comp. Science\n 3 = Programming\n 4 = Linux course\n ";
-	cin >> subjName;
-	int maxPoint = group[0].Points[subjName];
-	int index = 0;
-	for (int i = 1; i < size; i++)
-	{
-		if (group[i].Points[subjName] > maxPoint)
-		{
-			index = i;
-			maxPoint = group[i].Points[subjName];
-		}
-	}
-	PrintFIO(group, index);
-}
-
-void SortByAveragePoint(Student group[], int size) 
-{
-	Student tmp;
+	MARSH tmp;
 	for (int i = 0; i < size - 1; i++)
 	{
-		for (int j = 0; j < size-1; j++)
+		for (int j = 0; j < size - 1; j++)
 		{
-			if (group[j].MidPoints > group[j+1].MidPoints)
+			if (traffic[j].NUMER > traffic[j + 1].NUMER)
 			{
-				tmp = group[i];
-				group[i] = group[j];
-				group[j] = tmp;
+				tmp = traffic[i];
+				traffic[i] = traffic[j];
+				traffic[j] = tmp;
 			}
 		}
 	}
-}
+} 
 
-void SortByFIO(Student group[], int size) 
+void SearchLastPoint(MARSH traffic[], int size)
 {
-	Student temp;
+	cout << "Enter last point..." << endl;
+	string lastP;
+	cin >> lastP;
+	bool flag = false;
 	for (int i = 0; i < size; i++)
 	{
-		for (int j = 0; j < size; j++)
+		if (lastP == traffic[i].TERM)
 		{
-			string stud1 = group[j].FIO;
-			string stud2 = group[j + 1].FIO;
-			if (stud1.compare(stud2) == 1)
-			{
-				temp = group[i];
-				group[i] = group[j];
-				group[j] = temp;
-			}
+			PrintWay(traffic[i]);
+			flag = true;
 		}
+	}
+	if (!flag)
+	{
+		cout << "No matches";
+		cout << endl;
 	}
 }
 
-void FileWrite(Student group[], int size)
+void SearchFirstPoint(MARSH traffic[], int size)
 {
-	ofstream fileStrmOut("D:\\Repositories\\Structures\\1.txt", ios::binary);
-	fileStrmOut.write((char*)&group, sizeof(group));
-	fileStrmOut.close();
-}
-
-void FileRead(Student group[], int size)
-{
-	ifstream in("D:\\Repositories\\Structures\\1.txt", ios::binary);
-	in.read((char*)&group, sizeof(group));
-	in.close();
+	cout << "Enter first point..." << endl;
+	string firstP;
+	cin >> firstP;
+	bool flag = false;
+	for (int i = 0; i < size; i++)
+	{
+		if (firstP == traffic[i].BEGST)
+		{
+			PrintWay(traffic[i]);
+			flag = true;
+		}
+	}
+	if (!flag)
+	{
+		cout << "No matches";
+		cout << endl;
+	}
 }
 
 int main()
 {
-	Student* group = new Student[25];
+	MARSH* TRAFIC = new MARSH[4];
+	InputWays(TRAFIC, 4);
+	SortByNumber(TRAFIC, 4);
+	SearchFirstPoint(TRAFIC, 4);
+	SearchLastPoint(TRAFIC, 4);
+
+
+
+
+
+
+
 	//InputFIO(group, 1);
 	//AveragePoint(group, 0);
 	////FIOSearch(group, 5);
@@ -151,12 +121,14 @@ int main()
 	//	PrintFIO(group, i);
 	//}
 	//FileWrite(group, 1);
-	FileRead(group, 1);
-	/*MaxPointSearch(group[0], 3);*/
-	for (int i = 0; i < 1; i++)
-	{
-		PrintFIO(group,i);
-	}
+	//FileRead(group, 1);
+	///*MaxPointSearch(group[0], 3);*/
+	//for (int i = 0; i < 1; i++)
+	//{
+	//	PrintFIO(group,i);
+	//}
+
+
 
 }
 
